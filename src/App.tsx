@@ -195,6 +195,12 @@ export default function App() {
     }).sort((a, b) => b.createdAt - a.createdAt);
   }, [setoranList, dateStart, dateEnd, filterKitab, searchQuery]);
 
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  const isGanjil = currentMonth >= 6; // July to December
+  const semesterText = isGanjil ? "Semester Ganjil" : "Semester Genap";
+  const taText = isGanjil ? `TA ${currentYear}/${currentYear + 1}` : `TA ${currentYear - 1}/${currentYear}`;
+
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-[#4A443D] pb-12 font-sans">
       <header className="bg-[#7D8F69] text-white shadow-md">
@@ -206,7 +212,7 @@ export default function App() {
               </div>
               <div>
                 <h1 className="text-xl font-serif font-bold leading-tight">Mutabaah Setoran Hadits</h1>
-                <p className="text-xs opacity-90 uppercase tracking-widest">Ibnu Qayyim Boarding School</p>
+                <p className="text-xs opacity-90 uppercase tracking-widest">ISKA Quranic Boarding School</p>
               </div>
             </div>
             <div className="flex items-center gap-4 sm:gap-6">
@@ -235,8 +241,8 @@ export default function App() {
               </button>
               
               <div className="hidden sm:block text-right">
-                <p className="text-sm font-medium">Semester Genap</p>
-                <p className="text-xs opacity-75 italic">TA 2023/2024</p>
+                <p className="text-sm font-medium">{semesterText}</p>
+                <p className="text-xs opacity-75 italic">{taText}</p>
               </div>
               <div className="relative">
                 <button 
