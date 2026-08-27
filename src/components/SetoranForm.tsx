@@ -156,11 +156,11 @@ export function SetoranForm({ onSubmit, halaqahData, kitabOptions, isLoading }: 
         <table className="w-full text-left border-collapse">
           <thead className="bg-[#F5F1E8] text-[#A4907C] text-[10px] uppercase tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-bold whitespace-nowrap">Nama Santri</th>
+              <th className="px-3 sm:px-4 py-3 font-bold sticky left-0 z-20 bg-[#F5F1E8] shadow-[inset_-1px_0_0_#D4C7B0] w-[110px] sm:w-auto min-w-[110px] sm:min-w-[200px] sm:whitespace-nowrap">Nama Santri</th>
               <th className="px-4 py-3 font-bold whitespace-nowrap w-40">Kitab</th>
               <th className="px-4 py-3 font-bold whitespace-nowrap min-w-[140px]">No. Hadits (Mulai - Sampai)</th>
               <th className="px-4 py-3 font-bold whitespace-nowrap w-36">Predikat</th>
-              <th className="px-4 py-3 font-bold whitespace-nowrap">Catatan</th>
+              <th className="px-4 py-3 font-bold whitespace-nowrap min-w-[150px]">Catatan</th>
             </tr>
           </thead>
           <tbody className="text-sm divide-y divide-[#F0EBE0]">
@@ -174,10 +174,10 @@ export function SetoranForm({ onSubmit, halaqahData, kitabOptions, isLoading }: 
                 {inputs[santri]?.map((row, index) => (
                   <tr key={row.id} className="hover:bg-[#FAF8F4]">
                     {index === 0 && (
-                      <td rowSpan={inputs[santri].length} className="px-4 py-3 align-top border-r border-[#F0EBE0] bg-white">
+                      <td rowSpan={inputs[santri].length} className="px-3 sm:px-4 py-3 align-top bg-white sticky left-0 z-10 shadow-[inset_-1px_0_0_#F0EBE0] w-[110px] sm:w-auto min-w-[110px] sm:min-w-[200px]">
                         <div className="flex flex-col gap-2">
-                          <span className="font-bold text-[#4A443D] whitespace-nowrap">{santri}</span>
-                          <div className="flex gap-1.5 mt-1">
+                          <span className="font-bold text-[#4A443D] block break-words sm:whitespace-nowrap leading-snug">{santri}</span>
+                          <div className="flex flex-col sm:flex-row gap-1.5 mt-1">
                             <button type="button" onClick={() => handleSaveSantri(santri)} className="text-[10px] bg-[#7D8F69] text-white px-2 py-1.5 rounded flex items-center gap-1 hover:bg-[#687a55] transition-colors font-bold tracking-wider" title="Simpan data santri ini">
                               <Save size={12} /> Simpan
                             </button>
