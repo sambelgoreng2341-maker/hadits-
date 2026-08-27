@@ -1,0 +1,6 @@
+{
+  "name": "Mutabaah Hadits IQBS",
+  "description": "Aplikasi pencatatan dan rekapitulasi setoran hafalan hadits santri IQBS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
