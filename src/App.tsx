@@ -188,23 +188,23 @@ export default function App() {
               <button 
                 onClick={handleSyncData}
                 disabled={isSyncing || pendingCount === 0}
-                className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${pendingCount > 0 ? 'bg-amber-100 text-amber-700 hover:bg-amber-200 cursor-pointer' : 'bg-white/20 text-white cursor-default'}`}
+                className={`flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${pendingCount > 0 ? 'bg-amber-100 text-amber-700 hover:bg-amber-200 cursor-pointer' : 'bg-white/20 text-white cursor-default'}`}
                 title={pendingCount > 0 ? "Simpan ke Database" : "Semua data tersimpan"}
               >
                 {isSyncing ? (
                   <>
                     <RefreshCw size={16} className="animate-spin" />
-                    <span>Menyinkronkan...</span>
+                    <span className="hidden sm:inline">Menyinkronkan...</span>
                   </>
                 ) : pendingCount > 0 ? (
                   <>
                     <CloudOff size={16} />
-                    <span>{pendingCount} Tertunda</span>
+                    <span>{pendingCount} <span className="hidden sm:inline">Tertunda</span></span>
                   </>
                 ) : (
                   <>
                     <Cloud size={16} />
-                    <span>Tersimpan</span>
+                    <span className="hidden sm:inline">Tersimpan</span>
                   </>
                 )}
               </button>
