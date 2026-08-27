@@ -55,11 +55,36 @@ export default function App() {
         const result = await response.json();
         
         if (result.status === 'success') {
-          if (Object.keys(result.santri).length > 0) {
+          if (result.santri && Object.keys(result.santri).length > 0) {
             setHalaqahData(result.santri);
           }
           if (result.kitab && result.kitab.length > 0) {
             setKitabOptions(result.kitab);
+          }
+          if (result.setoran && Array.isArray(result.setoran)) {
+            const serverSetorans: Setoran[] = result.setoran.map((item: any) => ({
+              id: item.id,
+              tanggal: item.tanggal,
+              halaqah: item.halaqah,
+              namaSantri: item.namaSantri,
+              kitab: item.kitab,
+              noHadits: item.noHadits,
+              predikat: item.predikat,
+              catatan: item.catatan || '',
+              createdAt: typeof item.createdAt === 'number' ? item.createdAt : Date.parse(item.createdAt) || Date.now(),
+              syncStatus: 'synced'
+            }));
+
+            setSetoranList(prev => {
+              // Pertahankan data yang masih tertunda di perangkat ini
+              const localPending = prev.filter(s => s.syncStatus === 'pending');
+              const serverIds = new Set(serverSetorans.map(s => s.id));
+              // Pastikan data pending tidak duplikat dengan yang dari server
+              const uniquePending = localPending.filter(s => !serverIds.has(s.id));
+              
+              // Gabungkan lalu urutkan berdasarkan yang terbaru
+              return [...uniquePending, ...serverSetorans].sort((a, b) => b.createdAt - a.createdAt);
+            });
           }
         }
       } catch (error) {
