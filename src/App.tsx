@@ -103,7 +103,7 @@ export default function App() {
 
   const applyFilterMode = (mode: string) => {
     setFilterMode(mode as any);
-    if (mode !== 'jangka_waktu') setIsFilterMenuOpen(false);
+    if (mode !== 'jangka_waktu' && mode !== 'harian') setIsFilterMenuOpen(false);
     
     if (mode === 'jangka_waktu') return;
     
@@ -346,11 +346,14 @@ export default function App() {
                 <div className="relative">
                   <button 
                     onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
-                    className="px-3 py-2 bg-[#FAF8F4] border border-[#D4C7B0] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#7D8F69] text-sm flex items-center gap-2 h-full min-w-[140px] justify-between"
+                    className="px-3 py-2 bg-[#FAF8F4] border border-[#D4C7B0] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#7D8F69] text-sm flex items-center gap-2 h-full justify-between"
                   >
                     <div className="flex items-center gap-2">
                       <Filter size={16} className="text-[#A4907C]" />
                       <span className="capitalize font-medium">{filterMode.replace('_', ' ')}</span>
+                      <span className="text-xs text-[#A4907C] hidden sm:inline ml-1 font-normal">
+                        ({dateStart === dateEnd ? dateStart : `${dateStart} s/d ${dateEnd}`})
+                      </span>
                     </div>
                   </button>
                   
@@ -376,16 +379,25 @@ export default function App() {
                           </button>
                         </div>
                         
-                        {filterMode === 'jangka_waktu' && (
+                        {(filterMode === 'jangka_waktu' || filterMode === 'harian') && (
                           <div className="mt-3 pt-3 border-t border-[#F0EBE0] flex flex-col gap-2">
-                            <div>
-                              <label className="text-[10px] text-[#A4907C] font-bold uppercase mb-1 block">Dari Tanggal</label>
-                              <input type="date" value={dateStart} onChange={e => setDateStart(e.target.value)} className="w-full px-2 py-1.5 bg-[#FAF8F4] border border-[#D4C7B0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#7D8F69]" />
-                            </div>
-                            <div>
-                              <label className="text-[10px] text-[#A4907C] font-bold uppercase mb-1 block">Sampai Tanggal</label>
-                              <input type="date" value={dateEnd} onChange={e => setDateEnd(e.target.value)} className="w-full px-2 py-1.5 bg-[#FAF8F4] border border-[#D4C7B0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#7D8F69]" />
-                            </div>
+                            {filterMode === 'harian' ? (
+                              <div>
+                                <label className="text-[10px] text-[#A4907C] font-bold uppercase mb-1 block">Pilih Tanggal</label>
+                                <input type="date" value={dateStart} onChange={e => { setDateStart(e.target.value); setDateEnd(e.target.value); }} className="w-full px-2 py-1.5 bg-[#FAF8F4] border border-[#D4C7B0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#7D8F69]" />
+                              </div>
+                            ) : (
+                              <>
+                                <div>
+                                  <label className="text-[10px] text-[#A4907C] font-bold uppercase mb-1 block">Dari Tanggal</label>
+                                  <input type="date" value={dateStart} onChange={e => setDateStart(e.target.value)} className="w-full px-2 py-1.5 bg-[#FAF8F4] border border-[#D4C7B0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#7D8F69]" />
+                                </div>
+                                <div>
+                                  <label className="text-[10px] text-[#A4907C] font-bold uppercase mb-1 block">Sampai Tanggal</label>
+                                  <input type="date" value={dateEnd} onChange={e => setDateEnd(e.target.value)} className="w-full px-2 py-1.5 bg-[#FAF8F4] border border-[#D4C7B0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#7D8F69]" />
+                                </div>
+                              </>
+                            )}
                           </div>
                         )}
                       </div>
