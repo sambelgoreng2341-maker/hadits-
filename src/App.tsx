@@ -62,18 +62,32 @@ export default function App() {
             setKitabOptions(result.kitab);
           }
           if (result.setoran && Array.isArray(result.setoran)) {
-            const serverSetorans: Setoran[] = result.setoran.map((item: any) => ({
-              id: item.id,
-              tanggal: item.tanggal,
-              halaqah: item.halaqah,
-              namaSantri: item.namaSantri,
-              kitab: item.kitab,
-              noHadits: item.noHadits,
-              predikat: item.predikat,
-              catatan: item.catatan || '',
-              createdAt: typeof item.createdAt === 'number' ? item.createdAt : Date.parse(item.createdAt) || Date.now(),
-              syncStatus: 'synced'
-            }));
+            const serverSetorans: Setoran[] = result.setoran.map((item: any) => {
+              // Pastikan tanggal selalu dalam format YYYY-MM-DD
+              let formattedTanggal = item.tanggal;
+              try {
+                const d = new Date(item.tanggal);
+                if (!isNaN(d.getTime())) {
+                  const year = d.getFullYear();
+                  const month = String(d.getMonth() + 1).padStart(2, '0');
+                  const day = String(d.getDate()).padStart(2, '0');
+                  formattedTanggal = `${year}-${month}-${day}`;
+                }
+              } catch (e) {}
+
+              return {
+                id: item.id,
+                tanggal: formattedTanggal,
+                halaqah: item.halaqah,
+                namaSantri: item.namaSantri,
+                kitab: item.kitab,
+                noHadits: item.noHadits,
+                predikat: item.predikat,
+                catatan: item.catatan || '',
+                createdAt: typeof item.createdAt === 'number' ? item.createdAt : Date.parse(item.createdAt) || Date.now(),
+                syncStatus: 'synced'
+              };
+            });
 
             setSetoranList(prev => {
               // Pertahankan data yang masih tertunda di perangkat ini

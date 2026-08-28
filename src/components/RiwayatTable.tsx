@@ -36,6 +36,7 @@ export function RiwayatTable({ data, onDelete }: RecapTableProps) {
           <thead className="bg-[#F5F1E8] text-[#A4907C] text-[10px] uppercase tracking-wider">
             <tr>
               <th className="px-6 py-3 font-bold">No</th>
+              <th className="px-6 py-3 font-bold whitespace-nowrap">Tanggal</th>
               <th className="px-6 py-3 font-bold">Nama Santri</th>
               <th className="px-6 py-3 font-bold">Halaqah</th>
               <th className="px-6 py-3 font-bold">Kitab</th>
@@ -50,6 +51,7 @@ export function RiwayatTable({ data, onDelete }: RecapTableProps) {
             {data.map((item, index) => (
               <tr key={item.id} className="hover:bg-[#FAF8F4]">
                 <td className="px-6 py-4 text-[#8E8578] font-medium">{index + 1}</td>
+                <td className="px-6 py-4 text-[#5F584F] whitespace-nowrap">{item.tanggal}</td>
                 <td className="px-6 py-4 font-bold text-[#4A443D]">{item.namaSantri}</td>
                 <td className="px-6 py-4 text-[#5F584F]">{item.halaqah}</td>
                 <td className="px-6 py-4 text-[#5F584F] font-medium">{item.kitab || '-'}</td>
