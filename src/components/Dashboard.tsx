@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Setoran } from '../types';
-import { Users, BookOpen, CalendarDays, Award } from 'lucide-react';
+import { Users, BookOpen, CalendarDays, Award, Filter, LayoutDashboard } from 'lucide-react';
 
 interface DashboardProps {
   data: Setoran[];
 }
 
 export function Dashboard({ data }: DashboardProps) {
+  const [selectedHalaqah, setSelectedHalaqah] = useState<string>('Semua Kelas');
+  
+  // Ambil daftar halaqah unik dari data
+  const uniqueHalaqahs = Array.from(new Set(data.map(s => s.halaqah))).filter(Boolean).sort();
+
+  // Filter data berdasarkan halaqah terpilih
+  const filteredData = selectedHalaqah === 'Semua Kelas' ? data : data.filter(s => s.halaqah === selectedHalaqah);
+
   // Fungsi pembantu untuk menghitung jumlah hadits/halaman dari format "1 - 5" atau "1, 2, 3"
   const hitungJumlahSetoran = (noHaditsStr: string): number => {
     if (!noHaditsStr) return 0;
@@ -36,10 +44,10 @@ export function Dashboard({ data }: DashboardProps) {
     return total > 0 ? total : 1;
   };
 
-  const totalSetoran = data.reduce((acc, curr) => acc + hitungJumlahSetoran(curr.noHadits), 0);
-  const uniqueSantri = new Set(data.map(s => s.namaSantri)).size;
+  const totalSetoran = filteredData.reduce((acc, curr) => acc + hitungJumlahSetoran(curr.noHadits), 0);
+  const uniqueSantri = new Set(filteredData.map(s => s.namaSantri)).size;
   
-  const santriCounts = data.reduce((acc, curr) => {
+  const santriCounts = filteredData.reduce((acc, curr) => {
     acc[curr.namaSantri] = (acc[curr.namaSantri] || 0) + hitungJumlahSetoran(curr.noHadits);
     return acc;
   }, {} as Record<string, number>);
@@ -49,10 +57,32 @@ export function Dashboard({ data }: DashboardProps) {
     .slice(0, 5);
 
   const hariIni = new Date().toISOString().split('T')[0];
-  const setoranHariIni = data.filter(s => s.tanggal === hariIni).reduce((acc, curr) => acc + hitungJumlahSetoran(curr.noHadits), 0);
+  const setoranHariIni = filteredData.filter(s => s.tanggal === hariIni).reduce((acc, curr) => acc + hitungJumlahSetoran(curr.noHadits), 0);
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-[#E8E2D5]">
+        <h2 className="text-lg font-serif font-bold text-[#5F584F] flex items-center gap-2">
+          <LayoutDashboard size={20} className="text-[#7D8F69]" />
+          Ringkasan Statistik
+        </h2>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="bg-[#F5F1E8] p-2 rounded-lg text-[#A4907C]">
+            <Filter size={16} />
+          </div>
+          <select 
+            value={selectedHalaqah} 
+            onChange={(e) => setSelectedHalaqah(e.target.value)}
+            className="w-full sm:w-auto bg-[#FAF8F4] border border-[#D4C7B0] text-[#4A443D] text-sm rounded-lg focus:ring-[#7D8F69] focus:border-[#7D8F69] block p-2"
+          >
+            <option value="Semua Kelas">Semua Kelas / Halaqah</option>
+            {uniqueHalaqahs.map(h => (
+              <option key={h} value={h}>{h}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-[#E8E2D5] flex items-center gap-4">
           <div className="w-12 h-12 bg-[#F5F1E8] rounded-xl flex items-center justify-center text-[#7D8F69]">
